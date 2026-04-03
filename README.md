@@ -29,20 +29,17 @@ Maintenance and connectivity are handled via AWS Systems Manager (SSM), without 
 
 ## 2. Design Decisions   
 <a name="#2-design-decisions"></a>
-### <ins>Terraform</ins>
-Using IaC ensures reproducibility, version control, and automated deployments. The infrastructure can be deployed or destroyed with a single command, optimizing costs and agility.     
 
-### <ins>2 Private Subnets for the ASG</ins>
-This guarantees high availability and resilience in case of an AZ (Availability Zone) failure.  
+<br/>
 
-### <ins>VPC Endpoint S3 instead of a NAT Gateway (cost and limited internet needs)</ins> 
-Private instances do not require constant internet access. A free and secure S3 endpoint is sufficient for bootstrap and avoids the high costs of a NAT Gateway.  
-  
-### <ins>Session Manager to enhance security by keeping SSH closed</ins>
-Port 22 remains closed. Access to instances is done through Systems Manager, strengthening security and simplifying access management.
-  
-### <ins>Single CloudWatch Alarm for simplicity</ins>
-One alarm on 4XX errors demonstrates monitoring and notification while keeping complexity and costs low. 
+| Components                                             | Justification                 |
+|--------------------------------------------------------|-------------------------------|
+| **Terraform**                                          | Reproducibility, version control, automated deployments, costs optimization | 
+| **2 private subnets for the Auto Scaling Group**       | High Availability and resilience in case of an AZ failure                 | 
+| **VPC endpoint over NAT Gateway**                      | Costs saving, sufficient for maintenance when internet access is not required for workloads               | 
+| **Session Manager over SSH key**                       | Stengthen security by closing port 22, simplify access management              |               
+| **Single CloudWatch Alarm**                            | Demonstration simplicity             |
+
 <br/>
 <br/>
 <br/>
