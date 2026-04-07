@@ -13,7 +13,7 @@
 - [Architecture Overview](#3-architecture-overview)
 - [Deployment](#4-deployment)
 - [Results](#5-results)
-- [Infrastructure cleaning](#6-infra_cleaning)
+- [Infrastructure cleaning](#6-infra-cleaning)
 - [Pricing](#7-pricing)
 - [Improvements & Next Steps](#8-improvements--next-steps)
 - [References](#9-references)
@@ -339,7 +339,7 @@ After 4–5 minutes, the email alert is received:
 -->
 
 ## 6. Infrastructure cleaning
-<a name="#6-infra_cleaning"></a>
+<a name="#6-infra-cleaning"></a>
 ```terraform
 terraform plan -destroy
 terraform destroy -auto-approve
