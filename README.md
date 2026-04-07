@@ -12,9 +12,11 @@
 - [Design Decisions](#2-design-decisions)
 - [Architecture Overview](#3-architecture-overview)
 - [Deployment](#4-deployment)
-- [Pricing](#5-pricing)
-- [Improvements & Next Steps](#6-improvements--next-steps)
-- [References](#7-references)
+- [Results](#5-results)
+- [Infrastructure cleaning](#6-infra_cleaning)
+- [Pricing](#7-pricing)
+- [Improvements & Next Steps](#8-improvements--next-steps)
+- [References](#9-references)
   <br/>
   <br/>
   <br/>
@@ -73,25 +75,30 @@ used to monitor incoming traffic and trigger alerts on abnormal traffic such as 
 
 <br/>
 
-### <ins>Prerequisites:</ins>
+<details>
+<summary>Prerequisites</summary>
 
 - Active AWS account.
 - AWS CLI configured.
 - Terraform installed.
+</details>
 
 <br/>
 
-### Step 1 - Clone this repo
+<details>
+<summary>Step 1 - Clone this repo</summary> 
 
 ```terraform
 git clone https://github.com/MarineFurlan/AWS_Scalable_Infra_ALB_SSM_Maintenance_CloudWatch.git
 cd AWS_Scalable_Infra_ALB_SSM_Maintenance_CloudWatch
 ```
+</details>
 
 <br/>
 
-### Step 2 - Initialize the infrastructure
-
+<details>
+<summary>Step 2 - Initialize the infrastructure</summary>  
+  
 ```terraform
 terraform init
 terraform plan
@@ -112,9 +119,12 @@ ec2_security_group_id = "sg-XXXXXXXXX"
 sns_topic_arn = "arn:aws:sns:eu-west-3:XXXXXXXXX:vpc_alerts_webApp"
 target_group_arn = "arn:aws:elasticloadbalancing:eu-west-3:XXXXXXXXX:targetgroup/webApp-tg/XXXXXXXXX"
 ```
+</details>
+
 <br/>
 
-### Step 3 - Confirm the subscription to security alerts in your email inbox.
+<details>
+<summary>Step 3 - Confirm the subscription to security alerts in your email inbox.</summary>
 
 ```bash
 # Store the SNS topic arn in a variable
@@ -129,9 +139,12 @@ aws sns list-subscriptions-by-topic --topic-arn $SNS_TOPIC_ARN \
 PendingConfirmation # If not subscribed
 $SNS_TOPIC_ARN:XXXXXXXXX # If subscribed
 ```
+</details>
+
 <br/>
 
-### Step 4 - Deployment validation
+<details>
+<summary>Step 4 - Deployment validation</summary>
 
 #### _ALB access_
 ```bash
@@ -250,9 +263,18 @@ aws ssm start-session --target $INSTANCE_ID
 #Expected Result
 ...
 ```
+</details>
+
 <br/>
 
 ## 5. Results
+<a name="#5-results"></a>
+
+Infrastructure overview :
+
+<br/>
+
+<img width="1569" height="450" alt="Infra_overview" src="https://github.com/user-attachments/assets/fbd32ce5-41f2-4109-a3c8-515801935cfa" />
 
 <!--
 - Screenshots below show how to identify which instance has which IP:
@@ -317,7 +339,7 @@ After 4–5 minutes, the email alert is received:
 -->
 
 ## 6. Infrastructure cleaning
-
+<a name="#6-infra_cleaning"></a>
 ```terraform
 terraform plan -destroy
 terraform destroy -auto-approve
@@ -327,7 +349,7 @@ terraform destroy -auto-approve
 
 ## 7. Pricing
 
-<a name="#5-pricing"></a>
+<a name="#7-pricing"></a>
 &emsp;&emsp;The infrastructure was designed with a cost-efficiency approach, balancing AWS best practices with budget
 optimization.  
 The estimate below is based on the [AWS Pricing Calculator](https://calculator.aws).
@@ -366,9 +388,9 @@ The estimate below is based on the [AWS Pricing Calculator](https://calculator.a
       <br/>
       <br/>
 
-## 6. Improvements & Next Steps
+## 8. Improvements & Next Steps
 
-<a name="#6-improvements--next-steps"></a>
+<a name="#8-improvements--next-steps"></a>
 Potential enhancements to the infrastructure include:
 
 - **Integrating a WAF (Web Application Firewall)** to strengthen protection against attacks and extend monitoring scope.
@@ -386,9 +408,9 @@ Potential enhancements to the infrastructure include:
   <br/>
   <br/>
 
-## 7. References
+## 9. References
 
-<a name="#7-references"></a>   
+<a name="#9-references"></a>   
 :link:[Application Load Balancer – AWS Docs](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)  
 :link:[Auto Scaling Groups – AWS Docs](https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-groups.html)  
 :link:[PrivateLinks – AWS Docs](https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html)  
