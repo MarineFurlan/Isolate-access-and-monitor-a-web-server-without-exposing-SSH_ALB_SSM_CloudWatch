@@ -1,5 +1,5 @@
 
-# Secure and monitor a private web server - ALB + SSM + CloudWatch
+# Isolate, Access and monitor a web server without exposing SSH - ALB + SSM + CloudWatch
 **Status :** 🟠 Work in progress
 <br/>
 <br/>
@@ -21,8 +21,8 @@
 
 ## 1. Introduction 
 <a name="#1-introduction"></a>     
-&emsp;&emsp;This project demonstrates how to securely host and monitor a private web server on AWS using an Application Load Balancer and EC2 instances in private subnets.\
-Access to the instances is managed through Systems Manager (SSM) without exposing SSH. CloudWatch is used to track metrics and trigger alerts for abnormal traffic such as HTTP 4XX errors.
+&emsp;&emsp;This lab walks through deploying EC2 instances in private subnets behind an Application Load Balancer, eliminating any direct exposure to the public internet.\
+Access to the instances is exclusively managed through Systems Manager (SSM), removing the need for SSH. CloudWatch is used to monitor incoming traffic and trigger alerts on abnormal traffic such as HTTP 4XX errors.
 <br/>
 <br/>
 
