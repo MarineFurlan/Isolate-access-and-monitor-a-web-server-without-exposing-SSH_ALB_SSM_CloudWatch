@@ -144,6 +144,25 @@ bash tests.sh
 ```
 ```bash
 # Expected results
+══════════════════════════════════════════
+  0 / INITIALIZATION
+══════════════════════════════════════════
+  → Loading variables from Terraform outputs...
+  
+[...]
+
+══════════════════════════════════════════
+  TEST SUMMARY
+══════════════════════════════════════════
+  Tests run    : 8
+  Passed       : 8                                                                                                                                                                                                                  
+  Failed       : 0                                                                                                                                                                                                                  
+
+  ✔ All tests passed — lab validated successfully.
+
+  ℹ  Check your inbox for the SNS alert email triggered by the 4XX simulation.
+  ℹ  Run terraform destroy when done to avoid unnecessary costs.                                                                                                                                                                    
+
 ```
 </details>
 
