@@ -142,7 +142,7 @@ A serie of tests will now be executed to review the infrastructure and its integ
 
 <br/>
 
-<img width="1441" height="843" alt="AWS_Scalable_Infra_Tests" src="https://github.com/user-attachments/assets/e03a78c6-4e98-4c2e-ad76-d317951af46e" />
+<img width="4203" height="2409" alt="AWS_Scalable_Infra_Tests" src="https://github.com/user-attachments/assets/7e5daa7e-df15-43b2-bce4-e8bf01a23af7" />
 
 <br/>
 <br/>
