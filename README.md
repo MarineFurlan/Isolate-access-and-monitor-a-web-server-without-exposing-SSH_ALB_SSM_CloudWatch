@@ -170,7 +170,7 @@ curl -s http://$ALB_DNS
 ```
 ```bash
 #Expected results
-<h1>Hello from ip-10-0-101-152.eu-west-3.compute.internal</h1>
+<h1>Hello from ip-10-0-101-XXX.eu-west-3.compute.internal</h1>
 ```
 </details>
 
@@ -190,8 +190,7 @@ aws ec2 describe-security-groups --group-ids $SG_ID \
 ```
 ```bash
 #Expected results
-[] # If closed
-# If open
+[]
 ```
 ```bash
 # Confirmer que l'unique source de trafic entrant autorisée est l'ALB
@@ -230,7 +229,7 @@ aws ssm describe-instance-information \
 |          ID          |   Platform     | Status  |
 +----------------------+----------------+---------+
 |  i-XXXXXXXXX         |  Amazon Linux  |  Online |
-|  i-XXXXXXXXX         |  Amazon Linux  |  Online |
+|  i-YYYYYYYYY         |  Amazon Linux  |  Online |
 +----------------------+----------------+---------+
 ```
 ```bash
@@ -242,8 +241,20 @@ aws ssm start-session --target $INSTANCE_ID
 ```
 ```bash
 #Expected Result
-Starting session with SessionId: marine-jpblbg89g464jk82rx4riv9dbq
+Starting session with SessionId: johndoe-xxxxxxxxxxxxxxxxxxxxxxxxx
 sh-5.2$
+```
+```bash
+#Exit the ssm session
+exit
+```
+```bash
+#Expected Result
+
+
+Exiting session with sessionId: johndoe-xxxxxxxxxxxxxxxxxxxxxxxxx.
+
+
 ```
 </details>
 
@@ -269,7 +280,7 @@ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $ASG_NAM
 |     AZ      |          ID           |  State   |
 +-------------+-----------------------+----------+
 |  eu-west-3b |      i-XXXXXXXXX      |  Healthy |
-|  eu-west-3a |      i-XXXXXXXXX      |  Healthy |
+|  eu-west-3a |      i-YYYYYYYYY      |  Healthy |
 +-------------+-----------------------+----------+
 ```
 ```bash
@@ -290,19 +301,19 @@ aws autoscaling terminate-instance-in-auto-scaling-group \
 #Expected Result
 {                                                                                                                                                                                                                                  
     "Activity": {
-        "ActivityId": "2c9675b2-1334-c8ab-fe9d-8b0328521a4f",
+        "ActivityId": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
         "AutoScalingGroupName": "webApp-asg",
-        "Description": "Terminating EC2 instance: i-0fa945e4d1070942f",
-        "Cause": "At 2026-04-08T09:55:35Z instance i-0fa945e4d1070942f was taken out of service in response to a user request.",
+        "Description": "Terminating EC2 instance: i-YYYYYYYYY",
+        "Cause": "At 2026-04-08T09:55:35Z instance i-YYYYYYYYY was taken out of service in response to a user request.",
         "StartTime": "2026-04-08T09:55:35.858000+00:00",
         "StatusCode": "InProgress",
         "Progress": 0,
-        "Details": "{\"Availability Zone ID\":\"euw3-az1\",\"Subnet ID\":\"subnet-07e3076b75755ff90\",\"Availability Zone\":\"eu-west-3a\"}"
+        "Details": "{\"Availability Zone ID\":\"euw3-az1\",\"Subnet ID\":\"subnet-YYYYYYYYY\",\"Availability Zone\":\"eu-west-3a\"}"
     }
 }
 ```
 ```bash
-# Reactivate auto-launches
+# Reactivate auto-launches (after 2-3 minutes)
 aws autoscaling resume-processes \
   --auto-scaling-group-name $ASG_NAME \
   --scaling-processes Launch
@@ -323,8 +334,16 @@ done
 +------------+-----------------------+-------------+
 |     AZ     |          ID           |    State    |
 +------------+-----------------------+-------------+
-| eu-west-3a |      i-YYYYYYYYY      |  InService  |
-| eu-west-3b |      i-XXXXXXXXX      |  InService  |
+|  eu-west-3b|  i-XXXXXXXXX  |  InService  |
++------------+-----------------------+-------------+
+
+----------------------------------------------------                                                                                                                                                                               
+|             DescribeAutoScalingGroups            |
++------------+-----------------------+-------------+
+|     AZ     |          ID           |    State    |
++------------+-----------------------+-------------+
+|  eu-west-3a|      i-ZZZZZZZZZ      |  InService  |
+|  eu-west-3b|      i-XXXXXXXXX      |  InService  |
 +------------+-----------------------+-------------+
 ```
 </details>
@@ -345,7 +364,7 @@ for i in $(seq 1 50); do
 done
 echo "Requêtes envoyées."
 
-# Vérifier que les erreurs 4XX sont bien enregistrées dans les métriques ALB
+# Vérifier que les erreurs 4XX sont bien enregistrées dans les métriques ALB (after 2-3 minutes)
 ALB_ARN_SUFFIX=$(terraform output -raw alb_arn_suffix)
 
 aws cloudwatch get-metric-statistics \
@@ -366,8 +385,7 @@ aws cloudwatch get-metric-statistics \
 +-------+------------------------------+
 | Count |            Time              |
 +-------+------------------------------+
-|  90.0 |  2026-04-08T11:32:00+00:00   |
-|  1.0  |  2026-04-08T11:31:00+00:00   |
+|  50.0 |  YYYY-MM-DDTHH:MM:SS+00:00   |
 +-------+------------------------------+
 ```
 ```bash
@@ -379,12 +397,11 @@ aws cloudwatch describe-alarms --alarm-names $ALARM_NAME \
   --output table
  ```
 ```bash 
-# Expected result
-----------------------------------------------------------------------------------------------------------------------------                                                                                                       
+# Expected result----------------------------------------------------------------------------------------------------------------------------                                                                                                       
 |                                                      DescribeAlarms                                                      |
 +--------+-----------------------------------------------------------------------------------------------------------------+
 |  Name  |  webApp-ALB-4xx-alarm                                                                                           |
-|  Reason|  Threshold Crossed: 1 datapoint [90.0 (08/04/26 11:32:00)] was greater than or equal to the threshold (10.0).   |
+|  Reason|  Threshold Crossed: 1 datapoint [50.0 (YYYY-MM-DDTHH:MM:SS)] was greater than or equal to the threshold (10.0).   |
 |  State |  ALARM                                                                                                          |
 +--------+-----------------------------------------------------------------------------------------------------------------+
 ```
@@ -397,7 +414,7 @@ aws cloudwatch describe-alarms --alarm-names $ALARM_NAME \
 
 ```bash
 # Is the alarm email sent when the alarm is ON ?
-# Store SNS topic arn in a variable
+# Store SNS topic arn in a variable (after 2-3 minutes)
 SNS_TOPIC_ARN=$(terraform output -raw sns_topic_arn)
 
 aws cloudwatch describe-alarm-history \
@@ -413,8 +430,8 @@ aws cloudwatch describe-alarm-history \
 +------------------------------------------------+------------------------------------+
 |                     Summary                    |               Time                 |
 +------------------------------------------------+------------------------------------+
-|  Alarm updated from OK to ALARM                |  2026-04-08T11:35:05.690000+00:00  |
-...
+|  Alarm updated from INSUFFICIENT_DATA to ALARM |  YYYY-MM-DDTHH:MM:SS.690000+00:00  |
+|  ...
 +------------------------------------------------+------------------------------------+                                                                                                                                            
 
 # You must receive an AWS email notifying you that the alarm has entered in an ALARM state
@@ -424,7 +441,7 @@ Alarm Details:
 - Name:                       webApp-ALB-4xx-alarm
 - Description:                Alarm when ALB returns too many 4XX responses
 - State Change:               OK -> ALARM
-- Reason for State Change:    Threshold Crossed: 1 datapoint [90.0 (08/04/26 11:32:00)] was greater than or equal to the threshold (10.0).
+- Reason for State Change:    Threshold Crossed: 1 datapoint [50.0 (YYYY-MM-DDTHH:MM:SS)] was greater than or equal to the threshold (10.0).
 [...]
 Monitored Metric:
 - MetricNamespace:                     AWS/ApplicationELB
