@@ -79,9 +79,10 @@ used to monitor incoming traffic and trigger alerts on abnormal traffic such as 
 <summary>Prerequisites</summary>
 
 - Active AWS account
+- Bash terminal
 - AWS CLI configured
-- Terraform installed
 - Session Manager Plugin installed
+- Terraform installed
 </details>
 
 <br/>
@@ -137,8 +138,8 @@ aws sns list-subscriptions-by-topic --topic-arn $SNS_TOPIC_ARN \
 ```
 ```bash
 # Expected Result
-PendingConfirmation # If not subscribed
 $SNS_TOPIC_ARN:XXXXXXXXX # If subscribed
+PendingConfirmation # If not subscribed
 ```
 </details>
 
@@ -165,10 +166,7 @@ curl -s http://$ALB_DNS
 ```
 ```bash
 #Expected results
-StatusCode        : 200
-StatusDescription : OK
-Content           : <h1>Hello from [instance_ip]</h1>
-...
+<h1>Hello from ip-10-0-101-152.eu-west-3.compute.internal</h1>
 ```
 <br/>
 
@@ -232,7 +230,8 @@ aws ssm start-session --target $INSTANCE_ID
 ```
 ```bash
 #Expected Result
-
+Starting session with SessionId: marine-jpblbg89g464jk82rx4riv9dbq
+sh-5.2$
 ```
 <br/>
 
