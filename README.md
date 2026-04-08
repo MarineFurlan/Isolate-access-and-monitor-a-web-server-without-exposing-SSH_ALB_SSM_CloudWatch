@@ -138,6 +138,15 @@ target_group_arn = "arn:aws:elasticloadbalancing:eu-west-3:XXXXXXXXX:targetgroup
 
 <br/>
 
+A serie of tests will now be executed to review the infrastructure and its integrity.
+
+<br/>
+
+<img width="1441" height="843" alt="AWS_Scalable_Infra_Tests" src="https://github.com/user-attachments/assets/e03a78c6-4e98-4c2e-ad76-d317951af46e" />
+
+<br/>
+<br/>
+
 ```bash
 # Run the validation tests
 bash tests.sh
