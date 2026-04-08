@@ -148,7 +148,11 @@ PendingConfirmation # If not subscribed
 <details>
 <summary>Step 4 - Deployment validation</summary>
 
-#### _ALB access_
+<br/>
+
+<details>
+<summary>ALB access</summary>
+
 ```bash
 # Store ALB dns in a variable
 ALB_DNS=$(terraform output -raw alb_dns)
@@ -168,9 +172,13 @@ curl -s http://$ALB_DNS
 #Expected results
 <h1>Hello from ip-10-0-101-152.eu-west-3.compute.internal</h1>
 ```
+</details>
+
 <br/>
 
-#### _Closed SSH port_
+<details>
+<summary>Closed SSH port</summary>
+
 ```bash
 # Store Security group ID in a variable
 SG_ID=$(terraform output -raw ec2_security_group_id)
@@ -179,7 +187,7 @@ SG_ID=$(terraform output -raw ec2_security_group_id)
 aws ec2 describe-security-groups --group-ids $SG_ID \
   --query 'SecurityGroups[0].IpPermissions[?FromPort==`22`]' \
   --output json
-  ```
+```
 ```bash
 #Expected results
 [] # If closed
@@ -201,9 +209,13 @@ aws ec2 describe-security-groups --group-ids $SG_ID \
 |  80  |        [ALB-sg]         |
 +------+-------------------------+
 ```
+</details>
+
 <br/>
 
-#### _SSM instance connection_
+<details>
+<summary>SSM instance connection</summary>
+
 ```bash
 # List all registered instances in the SSM Fleet Manager
 aws ssm describe-instance-information \
@@ -233,9 +245,13 @@ aws ssm start-session --target $INSTANCE_ID
 Starting session with SessionId: marine-jpblbg89g464jk82rx4riv9dbq
 sh-5.2$
 ```
+</details>
+
 <br/>
 
-#### _New instance created in case of AZ failure_
+<details>
+<summary>New instance created in case of AZ failure</summary>
+
 ```bash
 # Store Autoscaling group name in a variable
 ASG_NAME=$(terraform output -raw asg_name)
@@ -244,7 +260,8 @@ ASG_NAME=$(terraform output -raw asg_name)
 aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $ASG_NAME \
   --query 'AutoScalingGroups[0].Instances[*].{ID:InstanceId,AZ:AvailabilityZone,State:HealthStatus}' \
   --output table
-
+```
+```bash
 #Expected Result
 --------------------------------------------------                                                                                                                                                                                 
 |            DescribeAutoScalingGroups           |
@@ -254,7 +271,8 @@ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $ASG_NAM
 |  eu-west-3b |      i-XXXXXXXXX      |  Healthy |
 |  eu-west-3a |      i-XXXXXXXXX      |  Healthy |
 +-------------+-----------------------+----------+
-
+```
+```bash
 # Suspend launches in the primary AZs (simulating a failure)
 PRIMARY_AZ="${AWS_REGION}a"
 aws autoscaling suspend-processes \
@@ -267,7 +285,8 @@ aws autoscaling terminate-instance-in-auto-scaling-group \
     --query "AutoScalingGroups[0].Instances[?AvailabilityZone=='$PRIMARY_AZ'].InstanceId | [0]" \
     --output text) \
   --no-should-decrement-desired-capacity
-  
+ ```
+```bash 
 #Expected Result
 {                                                                                                                                                                                                                                  
     "Activity": {
@@ -281,7 +300,8 @@ aws autoscaling terminate-instance-in-auto-scaling-group \
         "Details": "{\"Availability Zone ID\":\"euw3-az1\",\"Subnet ID\":\"subnet-07e3076b75755ff90\",\"Availability Zone\":\"eu-west-3a\"}"
     }
 }
-
+```
+```bash
 # Reactivate auto-launches
 aws autoscaling resume-processes \
   --auto-scaling-group-name $ASG_NAME \
@@ -295,7 +315,8 @@ while true; do
     --output table
   sleep 10
 done
-
+```
+```bash
 #Expected Result
 ----------------------------------------------------                                                                                                                                                                               
 |             DescribeAutoScalingGroups            |
@@ -306,9 +327,13 @@ done
 | eu-west-3b |      i-XXXXXXXXX      |  InService  |
 +------------+-----------------------+-------------+
 ```
+</details>
+
 <br/>
 
-#### _Alarm triggered_
+<details>
+<summary>Alarm triggered</summary>
+
 ```bash
 # Is the Cloudwatch alarm triggered when the webserver is under attack ?
 # Générer un volume d'erreurs 4XX en ciblant des routes inexistantes
@@ -333,7 +358,8 @@ aws cloudwatch get-metric-statistics \
   --statistics Sum \
   --query 'Datapoints[*].{Time:Timestamp,Count:Sum}' \
   --output table
-
+```
+```bash
 #Expected Result
 ----------------------------------------                                                                                                                                                                                           
 |          GetMetricStatistics         |
@@ -343,14 +369,16 @@ aws cloudwatch get-metric-statistics \
 |  90.0 |  2026-04-08T11:32:00+00:00   |
 |  1.0  |  2026-04-08T11:31:00+00:00   |
 +-------+------------------------------+
-
+```
+```bash
 # Vérifier l'état de l'alarme CloudWatch (peut prendre 1 à 2 minutes)
 ALARM_NAME=$(terraform output -raw cloudwatch_alarm_name)
 
 aws cloudwatch describe-alarms --alarm-names $ALARM_NAME \
   --query 'MetricAlarms[0].{Name:AlarmName,State:StateValue,Reason:StateReason}' \
   --output table
-  
+ ```
+```bash 
 # Expected result
 ----------------------------------------------------------------------------------------------------------------------------                                                                                                       
 |                                                      DescribeAlarms                                                      |
@@ -360,14 +388,17 @@ aws cloudwatch describe-alarms --alarm-names $ALARM_NAME \
 |  State |  ALARM                                                                                                          |
 +--------+-----------------------------------------------------------------------------------------------------------------+
 ```
+</details>
 
 <br/>
 
-#### _Email sent_
+<details>
+<summary>Email sent</summary>
+
 ```bash
 # Is the alarm email sent when the alarm is ON ?
 # Store SNS topic arn in a variable
-SNS_TOPIC_ARN=$(terraform output -raw sns_topic_arn
+SNS_TOPIC_ARN=$(terraform output -raw sns_topic_arn)
 
 aws cloudwatch describe-alarm-history \
   --alarm-name $ALARM_NAME \
@@ -402,6 +433,7 @@ Monitored Metric:
 [...]
 
 ```
+</details>
 </details>
 
 
