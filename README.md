@@ -174,7 +174,9 @@ bash tests.sh
 ```
 </details>
 
-
+<br/>
+<br/>
+<br/>
 
 ## 5. Results
 <a name="#5-results"></a>
@@ -245,6 +247,10 @@ After 4–5 minutes, the email alert is received:
 ![email_alarm](https://github.com/user-attachments/assets/95abb978-4a51-48a7-aa14-5ed9e17a5ad8)
 -->
 
+<br/>
+<br/>
+<br/>
+
 ## 6. Infrastructure cleaning
 <a name="#6-infra-cleaning"></a>
 
@@ -253,6 +259,8 @@ terraform plan -destroy
 terraform destroy -auto-approve
 ```  
 
+<br/>
+<br/>
 <br/>
 
 ## 7. Pricing
@@ -308,6 +316,10 @@ The estimate below is based on the [AWS Pricing Calculator](https://calculator.a
       <br/>
 </details>
 
+<br/>
+<br/>
+<br/>
+
 ## 8. Improvements & Next Steps
 
 <a name="#8-improvements--next-steps"></a>
@@ -324,9 +336,10 @@ Potential enhancements to the infrastructure include:
 
 - **Extending monitoring** (application logs, additional metrics, custom dashboards) to better anticipate issues and
   track application usage.
-  <br/>
-  <br/>
-  <br/>
+  
+<br/>
+<br/>
+<br/>
 
 ## 9. References
 
