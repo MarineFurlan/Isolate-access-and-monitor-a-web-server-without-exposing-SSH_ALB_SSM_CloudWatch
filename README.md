@@ -252,7 +252,7 @@ After 4–5 minutes, the email alert is received:
 <br/>
 
 ## 6. Infrastructure cleaning
-<a> name="#6-infra-cleaning"></a>
+<a name="#6-infra-cleaning"></a>
 
 ```terraform
 terraform plan -destroy
