@@ -252,7 +252,7 @@ After 4–5 minutes, the email alert is received:
 <br/>
 
 ## 6. Infrastructure cleaning
-<a name="#6-infra-cleaning"></a>
+<a> name="#6-infra-cleaning"></a>
 
 ```terraform
 terraform plan -destroy
@@ -351,3 +351,12 @@ Potential enhancements to the infrastructure include:
 :link:[Amazon CloudWatch Monitoring – AWS Docs](https://docs.aws.amazon.com/cloudwatch/)  
 :link:[AWS Pricing Calculator](https://calculator.aws/#/)  
 :link:[AWS Free Tier](https://aws.amazon.com/free) 
+
+<br/>
+<br/>
+<br/>
+
+## Author
+**Furlan Marine - Certified AWS Solutions Architect - Associate** \
+📌https://www.linkedin.com/in/marinefurlan/ \
+🎓https://www.credly.com/badges/06426b31-106e-4251-b866-6da8f4200e68/linked_in?t=t7j3hl
