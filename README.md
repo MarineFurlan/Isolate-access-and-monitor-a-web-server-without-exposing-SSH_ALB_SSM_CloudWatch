@@ -13,7 +13,7 @@
 - [Architecture Overview](#3-architecture-overview)
 - [Deployment](#4-deployment)
 - [Results](#5-results)
-- [Infrastructure cleaning](#6-cleaning)
+- [Infrastructure cleaning](#6-infrastructure-cleaning)
 - [Pricing](#7-pricing)
 - [Improvements & Next Steps](#8-improvements--next-steps)
 - [References](#9-references)
@@ -190,8 +190,7 @@ Infrastructure overview :
 <br/>
 
 ## 6. Infrastructure cleaning
-
-<a name="#6-cleaning"></a>
+<a name="#6-infrastructure-cleaning"></a>
 
 ```terraform
 terraform plan -destroy
