@@ -1,6 +1,6 @@
 variable "email_address" {
   type = string
-  default = "marinefurlan@hotmail.fr"
+  default = "[your_email]"
 }
 
 variable "name" {
