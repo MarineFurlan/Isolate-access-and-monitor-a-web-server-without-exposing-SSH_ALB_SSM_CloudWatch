@@ -2,7 +2,7 @@
 # =============================================================================
 # TEST SCRIPT — Isolate, Access and Monitor a Web Server Without Exposing SSH
 # =============================================================================
-# Usage : bash test_lab.sh
+# Usage : bash tests.sh
 # Run from the root of the project after terraform apply
 # =============================================================================
 
